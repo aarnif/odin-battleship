@@ -4,7 +4,7 @@
   "description": "Ready to use webpack configuration with tailwind css",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "webpack serve",
     "build": "webpack"
   },
@@ -12,7 +12,11 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.24.4",
+    "@babel/preset-env": "^7.24.4",
+    "babel-jest": "^29.7.0",
     "css-loader": "^6.10.0",
+    "jest": "^29.7.0",
     "postcss": "^8.4.38",
     "postcss-loader": "^8.1.1",
     "postcss-preset-env": "^9.5.2",
