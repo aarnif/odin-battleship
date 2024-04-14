@@ -1,9 +1,8 @@
-import sumOfTwoNumbers from "./modules/example.js";
+import DisplayController from "./modules/controllers/displayController";
 
 const app = () => {
-  const a = 1;
-  const b = 2;
-  console.log(`The sum of integers ${a} and ${b} is ${sumOfTwoNumbers(a, b)}`);
+  const display = new DisplayController();
+  display.loadPage();
 };
 
 export default app;
