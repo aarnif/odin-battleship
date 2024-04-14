@@ -1,7 +1,7 @@
 import Ship from "../Ship/Ship";
 
 class GameBoard {
-  constructor(width) {
+  constructor(width = 10) {
     this.ships = [];
     this.shipNames = [
       "Carrier",

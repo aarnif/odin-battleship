@@ -4,13 +4,13 @@ class AI extends Player {
   constructor(name = "AI") {
     super(name);
   }
-  createRandomCoordinates(gameBoardWidth) {
-    const x = Math.floor(Math.random() * gameBoardWidth);
-    const y = Math.floor(Math.random() * gameBoardWidth);
+  createRandomCoordinates() {
+    const x = Math.floor(Math.random() * 10);
+    const y = Math.floor(Math.random() * 10);
     return [x, y];
   }
-  getAICoordinates(gameBoardWidth) {
-    return this.createRandomCoordinates(gameBoardWidth);
+  getAICoordinates() {
+    return this.createRandomCoordinates();
   }
   makeMove(gameBoard) {
     while (true) {
