@@ -1,3 +1,13 @@
+const createPlaceShipsButton = () => {
+  const placeShipsButtonContainer = document.createElement("div");
+  placeShipsButtonContainer.className = "flex justify-center";
+  const placeShipsButton = document.createElement("button");
+  placeShipsButton.id = `place-ships`;
+  placeShipsButton.textContent = "Place Ships Randomly";
+  placeShipsButtonContainer.appendChild(placeShipsButton);
+  return placeShipsButtonContainer;
+};
+
 const createGameBoard = (playerName) => {
   const gameBoardContainer = document.createElement("div");
   gameBoardContainer.id = `${playerName}-game-board-container`;
@@ -50,6 +60,10 @@ const createGameBoard = (playerName) => {
 
   gameBoardContainer.appendChild(playerTitle);
   gameBoardContainer.appendChild(board);
+
+  if (playerName !== "AI") {
+    gameBoardContainer.appendChild(createPlaceShipsButton());
+  }
 
   return gameBoardContainer;
 };
