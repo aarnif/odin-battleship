@@ -11,6 +11,9 @@ class DisplayController {
     this.ai = this.game.AI;
     this.playerGameBoard = this.game.playerGameBoard;
     this.aiGameBoard = this.game.aiGameBoard;
+    this.shipNames = this.game.playerGameBoard.shipTypes.map(
+      (ship) => ship.name
+    );
   }
 
   handlePlayRound(e) {
@@ -33,7 +36,7 @@ class DisplayController {
     console.log(`Updating the game board for ${player}`);
     const gameBoardCells = document.querySelectorAll(`#${player}-cell`);
     const board = gameBoard.board;
-    const shipNames = gameBoard.shipNames;
+    const shipNames = this.shipNames;
     gameBoardCells.forEach((cell) => {
       const x = cell.dataset.x;
       const y = cell.dataset.y;

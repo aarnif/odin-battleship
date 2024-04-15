@@ -3,12 +3,12 @@ import Ship from "../Ship/Ship";
 class GameBoard {
   constructor(width = 10) {
     this.ships = [];
-    this.shipNames = [
-      "Carrier",
-      "Battleship",
-      "Cruiser",
-      "Submarine",
-      "Destroyer",
+    this.shipTypes = [
+      { name: "Carrier", length: 5 },
+      { name: "Battleship", length: 4 },
+      { name: "Cruiser", length: 3 },
+      { name: "Submarine", length: 3 },
+      { name: "Destroyer", length: 2 },
     ];
     this.board = this.createBoard(width);
   }
@@ -43,7 +43,7 @@ class GameBoard {
   }
   receiveAttack(coordinates) {
     const [x, y] = coordinates;
-    if (this.shipNames.includes(this.board[x][y])) {
+    if (this.shipTypes.map((ship) => ship.name).includes(this.board[x][y])) {
       this.hitShip(coordinates);
       this.board[x][y] = "hit";
     } else {
@@ -53,14 +53,57 @@ class GameBoard {
   checkIfAllShipsAreSunk() {
     for (let i = 0; i < this.board.length; ++i) {
       for (let j = 0; j < this.board.length; ++j) {
-        if (this.shipNames.includes(this.board[i][j])) {
+        if (
+          this.shipTypes.map((ship) => ship.name).includes(this.board[i][j])
+        ) {
           return false;
         }
       }
     }
     return true;
   }
-  checkIfShipCanBePlaced(coordinates) {
+  checkIfShipIsWithinOneCellFromAnotherShip(coordinates) {
+    let isNextTo = false;
+
+    this.board.map((row, x) => {
+      row.map((cell, y) => {
+        if (cell) {
+          if (
+            coordinates.some(
+              (coordinate) => coordinate[0] === x - 1 && coordinate[1] === y
+            ) ||
+            coordinates.some(
+              (coordinate) => coordinate[0] === x + 1 && coordinate[1] === y
+            ) ||
+            coordinates.some(
+              (coordinate) => coordinate[0] === x && coordinate[1] === y - 1
+            ) ||
+            coordinates.some(
+              (coordinate) => coordinate[0] === x && coordinate[1] === y + 1
+            ) ||
+            coordinates.some(
+              (coordinate) => coordinate[0] === x - 1 && coordinate[1] === y - 1
+            ) ||
+            coordinates.some(
+              (coordinate) => coordinate[0] === x + 1 && coordinate[1] === y + 1
+            ) ||
+            coordinates.some(
+              (coordinate) => coordinate[0] === x - 1 && coordinate[1] === y + 1
+            ) ||
+            coordinates.some(
+              (coordinate) => coordinate[0] === x + 1 && coordinate[1] === y - 1
+            )
+          ) {
+            // console.log("isNextTo", x, y, cell);
+            isNextTo = true;
+          }
+        }
+      });
+    });
+
+    return isNextTo;
+  }
+  checkIfShipCellTaken(coordinates) {
     for (let i = 0; i < coordinates.length; ++i) {
       const [x, y] = coordinates[i];
       if (this.board[x][y]) {
@@ -70,7 +113,11 @@ class GameBoard {
     return true;
   }
   placeShip(name, coordinates) {
-    if (!this.checkIfShipCanBePlaced(coordinates)) {
+    if (!this.checkIfShipCellTaken(coordinates)) {
+      return false;
+    }
+
+    if (this.checkIfShipIsWithinOneCellFromAnotherShip(coordinates)) {
       return false;
     }
 

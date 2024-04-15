@@ -11,10 +11,8 @@ class GameController {
     this.gameOver = false;
     this.winner = null;
 
-    this.placeShips(this.playerGameBoard);
-    this.placeShips(this.aiGameBoard);
-    this.sinkAlmostAllShips(this.playerGameBoard);
-    this.sinkAlmostAllShips(this.aiGameBoard);
+    this.placeShipsRandomly(this.playerGameBoard);
+    this.placeShipsRandomly(this.aiGameBoard);
   }
   placeShips(gameBoard) {
     gameBoard.placeShip("Destroyer", [
@@ -45,23 +43,44 @@ class GameController {
       [9, 5],
     ]);
   }
-  sinkAlmostAllShips(gameBoard) {
-    gameBoard.receiveAttack([1, 1]);
-    gameBoard.receiveAttack([1, 2]);
-    gameBoard.receiveAttack([3, 1]);
-    gameBoard.receiveAttack([3, 2]);
-    gameBoard.receiveAttack([3, 3]);
-    gameBoard.receiveAttack([5, 1]);
-    gameBoard.receiveAttack([5, 2]);
-    gameBoard.receiveAttack([5, 3]);
-    gameBoard.receiveAttack([7, 1]);
-    gameBoard.receiveAttack([7, 2]);
-    gameBoard.receiveAttack([7, 3]);
-    gameBoard.receiveAttack([7, 4]);
-    gameBoard.receiveAttack([9, 1]);
-    gameBoard.receiveAttack([9, 2]);
-    gameBoard.receiveAttack([9, 3]);
-    gameBoard.receiveAttack([9, 4]);
+  placeShipsRandomly(gameBoard) {
+    const directions = ["horizontal", "vertical"];
+    const shipTypes = gameBoard.shipTypes;
+
+    for (let i = 0; i < shipTypes.length; ++i) {
+      while (true) {
+        const shipName = shipTypes[i].name;
+        const shipLength = shipTypes[i].length;
+        const direction = directions[Math.floor(Math.random() * 2)];
+        const coordinates = [];
+
+        if (direction === "vertical") {
+          const x = Math.floor(Math.random() * 10);
+          const y =
+            Math.floor(Math.random() * 10) > shipLength
+              ? Math.floor(Math.random() * shipLength)
+              : 10 - shipLength;
+          for (let j = 0; j < shipLength; ++j) {
+            coordinates.push([x, y + j]);
+          }
+        } else {
+          const x = shipLength;
+          const y =
+            Math.floor(Math.random() * 10) > shipLength
+              ? Math.floor(Math.random() * shipLength)
+              : 10 - shipLength;
+          for (let j = 0; j < shipLength; ++j) {
+            coordinates.push([x + j, y]);
+          }
+        }
+
+        console.log(shipName, coordinates);
+
+        if (gameBoard.placeShip(shipName, coordinates)) {
+          break;
+        }
+      }
+    }
   }
   playRound(coordinates) {
     const playerMove = this.player.makeMove(this.aiGameBoard, coordinates);
