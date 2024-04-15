@@ -2,6 +2,7 @@ import GameController from "./gameController.js";
 import addGameBoard from "../domElements/gameBoard.js";
 
 const content = document.getElementById("content");
+const gameOverModal = document.getElementById("game-over-modal");
 
 class DisplayController {
   constructor() {
@@ -15,9 +16,17 @@ class DisplayController {
   handlePlayRound(e) {
     console.log("Handling the play round");
     const coordinates = [e.target.dataset.x, e.target.dataset.y];
-    this.game.playRound(coordinates);
-    this.updateDisplay(this.player.name, this.playerGameBoard);
+
+    const winner = this.game.playRound(coordinates);
+
     this.updateDisplay(this.ai.name, this.aiGameBoard);
+
+    if (winner === "Player") {
+      console.log("Player wins!");
+      this.displayGameOver(winner);
+    } else {
+      this.updateDisplay(this.player.name, this.playerGameBoard);
+    }
   }
 
   updateDisplay(player, gameBoard) {
@@ -42,6 +51,25 @@ class DisplayController {
     });
   }
 
+  displayGameOver(winner) {
+    console.log("Displaying the game over screen");
+    const gameOverMessage = document.getElementById("game-over-message");
+    gameOverMessage.textContent = `${winner} wins!`;
+    gameOverModal.showModal();
+  }
+
+  newGame() {
+    console.log("Starting a new game");
+    this.game = new GameController();
+    this.player = this.game.player;
+    this.ai = this.game.AI;
+    this.playerGameBoard = this.game.playerGameBoard;
+    this.aiGameBoard = this.game.aiGameBoard;
+
+    this.updateDisplay(this.player.name, this.playerGameBoard);
+    this.updateDisplay(this.ai.name, this.aiGameBoard);
+  }
+
   loadPage() {
     console.log("Loading the page");
     addGameBoard(content, this.player.name);
@@ -56,6 +84,13 @@ class DisplayController {
     playerGameBoardCells.forEach((cell) => {
       if (cell.dataset.x === undefined || cell.dataset.y === undefined) return;
       cell.addEventListener("click", (e) => this.handlePlayRound(e));
+    });
+
+    const closeModalButton = document.getElementById("close-modal");
+
+    closeModalButton.addEventListener("click", () => {
+      this.newGame();
+      gameOverModal.close();
     });
   }
 }

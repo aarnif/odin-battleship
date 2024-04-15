@@ -9,6 +9,7 @@ class GameController {
     this.playerGameBoard = new GameBoard();
     this.aiGameBoard = new GameBoard();
     this.gameOver = false;
+    this.winner = null;
 
     this.placeShips(this.playerGameBoard);
     this.placeShips(this.aiGameBoard);
@@ -70,13 +71,15 @@ class GameController {
 
     if (this.aiGameBoard.checkIfAllShipsAreSunk()) {
       this.gameOver = true;
-      console.log("Player wins!");
+      this.winner = "Player";
+      return this.winner;
     }
 
     const aiMove = this.AI.makeMove(this.playerGameBoard);
     if (this.playerGameBoard.checkIfAllShipsAreSunk()) {
       this.gameOver = true;
-      console.log("AI wins!");
+      this.winner = "AI";
+      return this.winner;
     }
 
     return true;
