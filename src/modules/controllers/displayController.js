@@ -54,6 +54,16 @@ class DisplayController {
     });
   }
 
+  emptyDisplay(player) {
+    console.log(`Emptying the display for ${player}`);
+    const gameBoardCells = document.querySelectorAll(`#${player}-cell`);
+    gameBoardCells.forEach((cell) => {
+      cell.classList.remove("bg-slate-400");
+      cell.classList.remove("bg-green-400");
+      cell.classList.remove("bg-red-400");
+    });
+  }
+
   displayGameOver(winner) {
     console.log("Displaying the game over screen");
     const gameOverMessage = document.getElementById("game-over-message");
@@ -69,6 +79,8 @@ class DisplayController {
     this.playerGameBoard = this.game.playerGameBoard;
     this.aiGameBoard = this.game.aiGameBoard;
 
+    this.emptyDisplay(this.player.name);
+    this.emptyDisplay(this.ai.name);
     this.updateDisplay(this.player.name, this.playerGameBoard);
     this.updateDisplay(this.ai.name, this.aiGameBoard);
   }
