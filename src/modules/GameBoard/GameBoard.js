@@ -25,6 +25,11 @@ class GameBoard {
 
     return board;
   }
+  printBoard() {
+    for (let i = 0; i < this.board.length; ++i) {
+      console.log(this.board[i]);
+    }
+  }
   getCordinate(coordinates) {
     const [x, y] = coordinates;
     return this.board[x][y];
@@ -112,7 +117,7 @@ class GameBoard {
     }
     return true;
   }
-  placeShip(name, coordinates) {
+  placeShip(name, coordinates, direction) {
     if (!this.checkIfShipCellTaken(coordinates)) {
       return false;
     }
@@ -121,10 +126,35 @@ class GameBoard {
       return false;
     }
 
-    const newShip = new Ship(name, coordinates.length);
+    const newShip = new Ship(name, coordinates.length, direction, coordinates);
     this.mark(coordinates, name);
     this.ships.push(newShip);
     return true;
+  }
+  getCoordinatesOfFreeCells() {
+    const freeCells = [];
+
+    this.board.map((row, x) => {
+      row.map((cell, y) => {
+        if (!cell) {
+          freeCells.push([x, y]);
+        }
+      });
+    });
+    return freeCells;
+  }
+  getCoordinatesOfAllShips() {
+    const allTheShipCoordinates = [];
+
+    this.board.map((row, x) => {
+      row.map((cell, y) => {
+        if (cell) {
+          allTheShipCoordinates.push([x, y]);
+        }
+      });
+    });
+
+    return allTheShipCoordinates;
   }
 }
 

@@ -76,7 +76,7 @@ class GameController {
 
         // console.log(shipName, coordinates);
 
-        if (gameBoard.placeShip(shipName, coordinates)) {
+        if (gameBoard.placeShip(shipName, coordinates, direction)) {
           break;
         }
       }

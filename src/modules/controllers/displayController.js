@@ -87,13 +87,20 @@ class DisplayController {
 
   initNewGame() {
     console.log("Initializing a new game");
-    const playerGameBoardCells = document.querySelectorAll(
-      `#${this.ai.name}-cell`
-    );
+    // Reset the game boards
+    const aiGameBoardCells = document.querySelectorAll(`#${this.ai.name}-cell`);
+    aiGameBoardCells.forEach((cell) => {
+      cell.replaceWith(cell.cloneNode(true));
+    });
 
+    const playerGameBoardCells = document.querySelectorAll(
+      `#${this.player.name}-cell`
+    );
+    console.log(playerGameBoardCells);
     playerGameBoardCells.forEach((cell) => {
       cell.replaceWith(cell.cloneNode(true));
     });
+
     this.emptyDisplay(this.player.name);
     this.emptyDisplay(this.ai.name);
     this.game = new GameController();
@@ -116,8 +123,8 @@ class DisplayController {
 
   loadPage() {
     console.log("Loading the page");
-    addGameBoard(content, this.player.name);
-    addGameBoard(content, this.ai.name);
+    addGameBoard(content, this.player.name, this.playerGameBoard);
+    addGameBoard(content, this.ai.name, this.aiGameBoard);
     this.updateDisplay(this.player.name, this.playerGameBoard);
 
     const placeShipsButton = document.getElementById("place-ships");
