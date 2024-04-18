@@ -1,5 +1,6 @@
 import GameController from "./gameController.js";
 import addGameBoard from "../domElements/gameBoard.js";
+import { gridCells } from "../data.js";
 
 const content = document.getElementById("content");
 const gameOverModal = document.getElementById("game-over-modal");
@@ -16,19 +17,50 @@ class DisplayController {
     );
   }
 
+  gameRoundMessages(messageOne, messageTwo) {
+    console.log("Displaying game message");
+    const aiGameBoardContainer = document.getElementById(
+      `${this.ai.name}-game-board-container`
+    );
+    const gameMessage = document.getElementById("game-message");
+    gameMessage.textContent = messageOne;
+    aiGameBoardContainer.classList.add("pointer-events-none");
+    this.updateDisplay(this.ai.name, this.aiGameBoard);
+    setTimeout(() => {
+      gameMessage.textContent = messageTwo;
+      this.updateDisplay(this.player.name, this.playerGameBoard);
+      aiGameBoardContainer.classList.remove("pointer-events-none");
+    }, 1000);
+  }
+
   handlePlayRound(e) {
     console.log("Handling the play round");
-    const coordinates = [e.target.dataset.x, e.target.dataset.y];
-
+    const coordinates = [
+      Number(e.target.dataset.x),
+      Number(e.target.dataset.y),
+    ];
     const winner = this.game.playRound(coordinates);
+    const hitCell = document.querySelector(
+      `#${this.ai.name}-cell[data-x="${coordinates[0]}"][data-y="${coordinates[1]}"]`
+    );
+
+    hitCell.classList.add("pointer-events-none");
+
+    const playerCoordinatesInGrid = gridCells[coordinates[1]][coordinates[0]];
+    const aiCoordinatesInGrid =
+      gridCells[this.playerGameBoard.latestHit[1]][
+        this.playerGameBoard.latestHit[0]
+      ];
 
     this.updateDisplay(this.ai.name, this.aiGameBoard);
 
     if (winner === "Player") {
-      console.log("Player wins!");
       this.displayGameOver(winner);
     } else {
-      this.updateDisplay(this.player.name, this.playerGameBoard);
+      this.gameRoundMessages(
+        `Player hits game board at ${playerCoordinatesInGrid}`,
+        `Ai hits game board at ${aiCoordinatesInGrid}`
+      );
     }
   }
 

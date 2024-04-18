@@ -11,6 +11,7 @@ class GameBoard {
       { name: "Destroyer", length: 2 },
     ];
     this.board = this.createBoard(width);
+    this.latestHit = null;
   }
   createBoard(width) {
     let board = [];
@@ -60,6 +61,7 @@ class GameBoard {
     } else {
       this.board[x][y] = "miss";
     }
+    this.latestHit = coordinates;
   }
   checkIfAllShipsAreSunk() {
     for (let i = 0; i < this.board.length; ++i) {
