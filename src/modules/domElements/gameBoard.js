@@ -42,6 +42,7 @@ const createShipContainer = (playerName, shipType) => {
   shipContainer.id = shipType.name;
   shipContainer.dataset.ship = "ship";
   shipContainer.dataset.direction = shipType.direction;
+  shipContainer.dataset.playerName = playerName;
   if (shipType.direction === "vertical") {
     shipContainer.className = "flex";
   } else {
@@ -189,6 +190,8 @@ const createGameBoard = (playerName, playerGameBoard) => {
   if (playerName !== "AI") {
     gameBoardContainer.appendChild(createPlaceShipsButton());
   }
+
+  console.log("This is a test");
 
   return gameBoardContainer;
 };

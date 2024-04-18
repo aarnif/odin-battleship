@@ -91,7 +91,13 @@ class DisplayController {
     this.playerGameBoard.changeShipPlacement(shipName, coordinates, direction);
     // console.log(this.playerGameBoard.board);
     // console.log(this.playerGameBoard.ships);
-    this.emptyDisplay(this.player.name);
+    this.addPlayerGameBoardToDom();
+    this.updateDisplay(this.player.name, this.playerGameBoard);
+  }
+
+  handleChangeShipDirection(shipName) {
+    console.log(`Changing ship ${shipName} direction`);
+    this.playerGameBoard.changeShipDirection(shipName);
     this.addPlayerGameBoardToDom();
     this.updateDisplay(this.player.name, this.playerGameBoard);
   }
@@ -121,12 +127,27 @@ class DisplayController {
     });
   }
 
+  handleActiveChangeShipDirection() {
+    const playersShips = document.querySelectorAll('[data-ship="ship"]');
+    playersShips.forEach((ship) => {
+      ship.addEventListener("click", (e) => {
+        const parentElement = e.target.parentElement;
+        const shipName = parentElement.id;
+        this.handleChangeShipDirection(shipName);
+      });
+    });
+  }
+
   addPlayerGameBoardToDom() {
     console.log("Adding game boards to the DOM");
     content.innerHTML = "";
     addGameBoard(content, this.player.name, this.playerGameBoard);
     this.updateDisplay(this.player.name, this.playerGameBoard);
     this.handleActiveDragShips();
+    this.handleActiveChangeShipDirection();
+    const placeShipsButton = document.getElementById("place-ships");
+    placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
+    placeShipsButton.classList.remove("invisible");
   }
 
   addAIGameBoardToDom() {
@@ -148,6 +169,9 @@ class DisplayController {
     const startGameButton = document.getElementById("start-game");
     const placeShipsButton = document.getElementById("place-ships");
     const aiGameBoardCells = document.querySelectorAll(`#${this.ai.name}-cell`);
+    const playerGameBoardCells = document.querySelectorAll(
+      `#${this.player.name}-cell`
+    );
     const playersShips = document.querySelectorAll('[data-ship="ship"]');
 
     startGameButton.classList.add("invisible");
@@ -157,7 +181,13 @@ class DisplayController {
       cell.addEventListener("click", (e) => this.handleCellClick(cell, e));
     });
 
+    playerGameBoardCells.forEach((cell) => {
+      cell.replaceWith(cell.cloneNode(true));
+    });
+
     playersShips.forEach((ship) => {
+      if (ship.dataset.playerName === "AI") return;
+      ship.replaceWith(ship.cloneNode(true));
       ship.draggable = false;
     });
   }
@@ -178,33 +208,25 @@ class DisplayController {
     this.addPlayerGameBoardToDom();
 
     const startGameButton = document.getElementById("start-game");
-    const placeShipsButton = document.getElementById("place-ships");
     const closeModalButton = document.getElementById("close-modal");
     const playerGameBoardCells = document.querySelectorAll(
       `#${this.player.name}-cell`
     );
-
-    placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
 
     startGameButton.addEventListener("click", () => {
       this.startNewGame();
     });
 
     startGameButton.classList.remove("invisible");
-    placeShipsButton.classList.remove("invisible");
 
     closeModalButton.addEventListener("click", () => {
       gameOverModal.close();
       this.loadNewGame();
-      const placeShipsButton = document.getElementById("place-ships");
-      placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
     });
 
     playerGameBoardCells.forEach((cell) => {
       cell.addEventListener("drop", (e) => this.handleCellDrop(e));
     });
-
-    this.handleActiveDragShips();
   }
 }
 
