@@ -2,7 +2,7 @@ import DisplayController from "./modules/controllers/displayController";
 
 const app = () => {
   const display = new DisplayController();
-  display.loadPage();
+  display.loadNewGame();
 };
 
 export default app;

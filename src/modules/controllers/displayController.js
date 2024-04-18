@@ -71,78 +71,140 @@ class DisplayController {
     gameOverModal.showModal();
   }
 
-  startNewGame() {
-    console.log("Starting a new game");
-    this.updateDisplay(this.ai.name, this.aiGameBoard);
-
-    const aiGameBoardCells = document.querySelectorAll(`#${this.ai.name}-cell`);
-
-    aiGameBoardCells.forEach((cell) => {
-      cell.addEventListener("click", (e) => this.handleCellClick(cell, e));
-    });
-
-    const placeShipsButton = document.getElementById("place-ships");
-    placeShipsButton.replaceWith(placeShipsButton.cloneNode(true));
-  }
-
-  initNewGame() {
-    console.log("Initializing a new game");
-    // Reset the game boards
-    const aiGameBoardCells = document.querySelectorAll(`#${this.ai.name}-cell`);
-    aiGameBoardCells.forEach((cell) => {
-      cell.replaceWith(cell.cloneNode(true));
-    });
-
-    const playerGameBoardCells = document.querySelectorAll(
-      `#${this.player.name}-cell`
-    );
-    console.log(playerGameBoardCells);
-    playerGameBoardCells.forEach((cell) => {
-      cell.replaceWith(cell.cloneNode(true));
-    });
-
-    this.emptyDisplay(this.player.name);
-    this.emptyDisplay(this.ai.name);
-    this.game = new GameController();
-    this.player = this.game.player;
-    this.ai = this.game.AI;
-    this.playerGameBoard = this.game.playerGameBoard;
-    this.aiGameBoard = this.game.aiGameBoard;
-    this.updateDisplay(this.player.name, this.playerGameBoard);
-  }
-
   handleCellClick(cell, e) {
     if (cell.dataset.x === undefined || cell.dataset.y === undefined) return;
     this.handlePlayRound(e);
   }
 
-  handlePlaceShips() {
-    console.log("Placing ships randomly");
-    this.initNewGame();
+  handleCellDrop(e) {
+    e.preventDefault();
+    const shipName = e.dataTransfer.getData("ship-name");
+    const coordinates = [
+      Number(e.target.dataset.x),
+      Number(e.target.dataset.y),
+    ];
+    const direction = e.dataTransfer.getData("direction");
+    console.log(
+      `Dropping ship ${shipName} in ${direction} position at`,
+      coordinates
+    );
+    this.playerGameBoard.changeShipPlacement(shipName, coordinates, direction);
+    console.log(this.playerGameBoard.board);
+    console.log(this.playerGameBoard.ships);
+    this.emptyDisplay(this.player.name);
+    this.addPlayerGameBoardToDom();
+    this.updateDisplay(this.player.name, this.playerGameBoard);
   }
 
-  loadPage() {
-    console.log("Loading the page");
-    addGameBoard(content, this.player.name, this.playerGameBoard);
-    addGameBoard(content, this.ai.name, this.aiGameBoard);
-    this.updateDisplay(this.player.name, this.playerGameBoard);
+  handlePlaceShips() {
+    console.log("Placing ships randomly");
+    this.loadNewGame();
+  }
 
-    const placeShipsButton = document.getElementById("place-ships");
-    placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
+  handleActiveDragShips() {
+    const playerGameBoardCells = document.querySelectorAll(
+      `#${this.player.name}-cell`
+    );
+    playerGameBoardCells.forEach((cell) => {
+      cell.addEventListener("dragover", (e) => e.preventDefault());
+      cell.addEventListener("drop", (e) => this.handleCellDrop(e));
+    });
+
+    const playerShipElements = document.querySelectorAll('[data-ship="ship"]');
+    console.log(playerShipElements);
+    playerShipElements.forEach((cell) => {
+      cell.addEventListener("dragstart", (e) => {
+        console.log(`Dragging ship ${e.target.id}`);
+        e.dataTransfer.setData("ship-name", e.target.id);
+        e.dataTransfer.setData("direction", e.target.dataset.direction);
+      });
+    });
+  }
+
+  addPlayerGameBoardToDom() {
+    console.log("Adding game boards to the DOM");
+    content.innerHTML = "";
+    addGameBoard(content, this.player.name, this.playerGameBoard);
+    this.updateDisplay(this.player.name, this.playerGameBoard);
+    this.handleActiveDragShips();
+  }
+
+  addAIGameBoardToDom() {
+    console.log("Adding AI game board to the DOM");
+    const aiGameBoardContainer = document.getElementById(
+      `${this.ai.name}-game-board-container`
+    );
+    if (aiGameBoardContainer) {
+      aiGameBoardContainer.remove();
+    }
+    addGameBoard(content, this.ai.name, this.aiGameBoard);
+    this.updateDisplay(this.ai.name, this.aiGameBoard);
+  }
+
+  startNewGame() {
+    console.log("Starting a new game");
+    this.addAIGameBoardToDom();
 
     const startGameButton = document.getElementById("start-game");
+    const placeShipsButton = document.getElementById("place-ships");
+    const aiGameBoardCells = document.querySelectorAll(`#${this.ai.name}-cell`);
+    const playersShips = document.querySelectorAll('[data-ship="ship"]');
+
+    startGameButton.classList.add("invisible");
+    placeShipsButton.classList.add("invisible");
+
+    aiGameBoardCells.forEach((cell) => {
+      cell.addEventListener("click", (e) => this.handleCellClick(cell, e));
+    });
+
+    playersShips.forEach((ship) => {
+      ship.draggable = false;
+    });
+  }
+
+  loadNewGame() {
+    console.log("Loading new game");
+
+    this.game = new GameController();
+    this.player = this.game.player;
+    this.ai = this.game.AI;
+    this.playerGameBoard = this.game.playerGameBoard;
+    this.aiGameBoard = this.game.aiGameBoard;
+    this.shipNames = this.game.playerGameBoard.shipTypes.map(
+      (ship) => ship.name
+    );
+
+    content.innerHTML = "";
+    this.addPlayerGameBoardToDom();
+
+    const startGameButton = document.getElementById("start-game");
+    const placeShipsButton = document.getElementById("place-ships");
+    const closeModalButton = document.getElementById("close-modal");
+    const playerGameBoardCells = document.querySelectorAll(
+      `#${this.player.name}-cell`
+    );
+
+    placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
+
     startGameButton.addEventListener("click", () => {
       this.startNewGame();
     });
 
-    const closeModalButton = document.getElementById("close-modal");
+    startGameButton.classList.remove("invisible");
+    placeShipsButton.classList.remove("invisible");
 
     closeModalButton.addEventListener("click", () => {
       gameOverModal.close();
-      this.initNewGame();
+      this.loadNewGame();
       const placeShipsButton = document.getElementById("place-ships");
       placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
     });
+
+    playerGameBoardCells.forEach((cell) => {
+      cell.addEventListener("drop", (e) => this.handleCellDrop(e));
+    });
+
+    this.handleActiveDragShips();
   }
 }
 

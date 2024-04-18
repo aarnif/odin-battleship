@@ -40,6 +40,8 @@ const createVerticalCoordinateRow = () => {
 const createShipContainer = (playerName, shipType) => {
   const shipContainer = document.createElement("div");
   shipContainer.id = shipType.name;
+  shipContainer.dataset.ship = "ship";
+  shipContainer.dataset.direction = shipType.direction;
   if (shipType.direction === "vertical") {
     shipContainer.className = "flex";
   } else {
