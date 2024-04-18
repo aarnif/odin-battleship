@@ -17,8 +17,7 @@ const createHorizontalCoordinateRow = () => {
   horizontalCordinateRow.className = "flex";
   horizontalCordinates.forEach((cordinate) => {
     const cell = document.createElement("div");
-    cell.className =
-      "w-10 h-10 flex justify-center items-center border border-black";
+    cell.className = "cell";
     cell.textContent = cordinate;
     horizontalCordinateRow.appendChild(cell);
   });
@@ -31,8 +30,7 @@ const createVerticalCoordinateRow = () => {
   verticalCoordinateRow.className = "flex flex-col";
   verticalCordinates.forEach((coordinate) => {
     const cell = document.createElement("div");
-    cell.className =
-      "w-10 h-10 flex justify-center items-center border border-black";
+    cell.className = "cell";
     cell.textContent = coordinate;
     verticalCoordinateRow.appendChild(cell);
   });
@@ -53,6 +51,7 @@ const createShipContainer = (playerName, shipType) => {
   }
   if (playerName !== "AI") {
     shipContainer.draggable = true;
+    shipContainer.classList.add("group");
   } else {
     // Display AI ships during development
     shipContainer.classList.add("bg-slate-400");
@@ -60,7 +59,7 @@ const createShipContainer = (playerName, shipType) => {
   for (let i = 0; i < shipType.length; ++i) {
     const shipCell = document.createElement("div");
     shipCell.id = `${playerName}-cell`;
-    shipCell.className = "flex-grow border border-black";
+    shipCell.className = "ship-cell";
     shipCell.dataset.x = shipType.coordinates[i][0];
     shipCell.dataset.y = shipType.coordinates[i][1];
     shipContainer.appendChild(shipCell);
@@ -136,8 +135,7 @@ const createGameBoardCells = (playerName, playerGameBoard) => {
     const cellElement = document.createElement("div");
     cellElement.id = `${playerName}-cell`;
     cellElement.style.gridArea = cell;
-    cellElement.className =
-      "w-10 h-10 flex justify-center items-center border border-black";
+    cellElement.className = "cell";
     cellElement.dataset.x = freeBoardCells[index][0];
     cellElement.dataset.y = freeBoardCells[index][1];
     board.appendChild(cellElement);
@@ -157,11 +155,16 @@ const createGameBoard = (playerName, playerGameBoard) => {
   gameBoardContainer.id = `${playerName}-game-board-container`;
 
   const playerTitle = document.createElement("h2");
-  playerTitle.className = "text-center";
+  playerTitle.className = "p-2 text-center text-2xl font-bold";
   playerTitle.textContent = playerName;
+
+  if (playerName === "AI") {
+    gameBoardContainer.classList.add("animate-fade-in-from-left");
+  }
 
   const board = document.createElement("div");
   board.id = `${playerName}-game-board`;
+  board.className = "board-bg";
 
   board.appendChild(createHorizontalCoordinateRow());
 
@@ -177,9 +180,9 @@ const createGameBoard = (playerName, playerGameBoard) => {
   gameBoardContainer.appendChild(playerTitle);
   gameBoardContainer.appendChild(board);
 
-  if (playerName !== "AI") {
-    gameBoardContainer.appendChild(createPlaceShipsButton());
-  }
+  // if (playerName !== "AI") {
+  //   gameBoardContainer.appendChild(createPlaceShipsButton());
+  // }
 
   console.log("This is a test");
 

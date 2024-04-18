@@ -10,13 +10,16 @@
     @apply bg-slate-300;
   }
   .body-text-color {
-    @apply text-slate-900;
+    @apply text-slate-700;
   }
   .header-bg {
     @apply bg-slate-500;
   }
   .header-text-color {
     @apply text-slate-100;
+  }
+  .board-bg {
+    @apply bg-slate-100;
   }
   .footer-bg {
     @apply bg-slate-500;
@@ -27,5 +30,14 @@
   .button {
     @apply bg-slate-500 text-white text-2xl font-bold m-8 p-4 border-2 border-slate-500 rounded-lg shadow-lg
     hover:border-slate-600 hover:text-slate-600 active:scale-95 transition-effect;
+  }
+  .cell {
+    @apply w-10 h-10 flex justify-center items-center border border-black text-xl font-bold transition-effect;
+  }
+  .ship-cell {
+    @apply flex-grow border border-black cursor-pointer group-hover:bg-slate-300;
+  }
+  .ai-cell {
+    @apply cursor-pointer hover:bg-slate-300;
   }
 }
