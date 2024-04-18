@@ -7,7 +7,7 @@
     <title>Odin Battleship</title>
     <script src="main.js" defer></script>
   </head>
-  <body class="m-0 box-border body-bg">
+  <body class="m-0 box-border body-bg body-text-color">
     <div id="wrapper" class="flex flex-col items-center h-screen">
       <header
         class="w-full flex justify-center items-center p-8 shadow-xl header-text-color header-bg"
@@ -16,18 +16,23 @@
       </header>
       <div
         id="game-info"
-        class="flex-grow w-full max-h-[400px] flex flex-col justify-center items-center"
+        class="flex-grow w-full max-h-[250px] flex flex-col justify-center items-center"
       >
         <div
           id="game-message"
-          class="min-h-[200px] flex justify-center items-center"
+          class="w-full h-[100px] flex justify-center items-center text-2xl font-bold animate-fade-in"
         ></div>
       </div>
       <div
         id="content"
         class="w-full flex-grow flex justify-around items-start"
       ></div>
-      <button id="start-game" class="button">Start Game</button>
+      <div
+        id="start-button-container"
+        class="flex-grow flex justify-center items-start"
+      >
+        <button id="start-game" class="button">Start Game</button>
+      </div>
       <footer
         class="relative bottom-0 w-full flex justify-center items-center shadow-lg footer-bg footer-text-color"
       >
