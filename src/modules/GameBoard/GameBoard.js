@@ -193,6 +193,8 @@ class GameBoard {
     const x = startingCoordinates[0];
     const y = startingCoordinates[1];
 
+    console.log("Ship direction", shipDirection);
+
     if (shipDirection === "vertical") {
       for (let j = 0; j < shipLength; ++j) {
         coordinates.push([x, y + j]);
@@ -202,6 +204,7 @@ class GameBoard {
         coordinates.push([x + j, y]);
       }
     }
+    console.log("New coordinates", coordinates);
     if (!this.checkIfShipCoordinatesAreValid(coordinates)) {
       console.log("Ship coordinates are not valid");
       return false;
@@ -301,6 +304,50 @@ class GameBoard {
     // console.log("New game board");
     // console.log(this.board);
     return true;
+  }
+  removeShipFromBoard(name) {
+    console.log("Removing ship");
+    const ship = this.ships.find((ship) => ship.name === name);
+    ship.coordinates.map((coordinate) => {
+      const [x, y] = coordinate;
+      this.board[x][y] = null;
+    });
+    this.ships = this.ships.filter((ship) => ship.name !== name);
+  }
+  addShipToBoard(name, coordinates, direction) {
+    console.log("Adding ship");
+    const newShip = new Ship(name, coordinates.length, direction, coordinates);
+    this.ships.push(newShip);
+    this.mark(coordinates, name);
+  }
+  changeShipDirection(name) {
+    console.log("Changing ship direction");
+    const ship = this.ships.find((ship) => ship.name === name);
+
+    this.removeShipFromBoard(ship.name);
+    let newDirection =
+      ship.direction === "vertical" ? "horizontal" : "vertical";
+
+    const shipCoordinates = this.createShipCoordinates(
+      ship.coordinates[0],
+      ship.length,
+      newDirection
+    );
+    console.log("Old ship coordinates", ship.coordinates);
+    if (!shipCoordinates) {
+      return false;
+    } else {
+      ship.direction = newDirection;
+      ship.coordinates = shipCoordinates;
+    }
+    console.log("New ship coordinates", ship.coordinates);
+
+    this.addShipToBoard(ship.name, ship.coordinates, newDirection);
+
+    console.log(this.ships);
+    console.log(this.board);
+
+    this.updateShipPositions();
   }
 }
 
