@@ -5,6 +5,7 @@ const createPlaceShipsButton = () => {
   placeShipsButtonContainer.className = "flex justify-center";
   const placeShipsButton = document.createElement("button");
   placeShipsButton.id = `place-ships`;
+  placeShipsButton.className = "button";
   placeShipsButton.textContent = "Place Ships Randomly";
   placeShipsButtonContainer.appendChild(placeShipsButton);
   return placeShipsButtonContainer;

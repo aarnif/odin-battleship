@@ -30,7 +30,7 @@ class DisplayController {
       gameMessage.textContent = messageTwo;
       this.updateDisplay(this.player.name, this.playerGameBoard);
       aiGameBoardContainer.classList.remove("pointer-events-none");
-    }, 1000);
+    }, 0);
   }
 
   handlePlayRound(e) {

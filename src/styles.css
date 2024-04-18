@@ -3,7 +3,29 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply m-0 box-border;
+  .transition-effect {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  .body-bg {
+    @apply bg-slate-300;
+  }
+  .body-text-color {
+    @apply text-slate-900;
+  }
+  .header-bg {
+    @apply bg-slate-500;
+  }
+  .header-text-color {
+    @apply text-slate-100;
+  }
+  .footer-bg {
+    @apply bg-slate-500;
+  }
+  .footer-text-color {
+    @apply text-slate-100;
+  }
+  .button {
+    @apply bg-slate-500 text-white text-2xl font-bold m-8 p-4 border-2 border-slate-500 rounded-lg shadow-lg
+    hover:border-slate-600 hover:text-slate-600 active:scale-95 transition-effect;
   }
 }
