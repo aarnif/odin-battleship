@@ -83,7 +83,7 @@ const createShips = (playerName, playerGameBoard) => {
     shipType.container = createShipContainer(playerName, shipType);
   });
 
-  console.log(shipTypes);
+  // console.log(shipTypes);
 
   return shipTypes;
 };
@@ -102,13 +102,13 @@ const createGridAreas = (gameBoard) => {
     ["J1", "J2", "J3", "J4", "J5", "J6", "J7", "J8", "J9", "J10"],
   ];
 
-  console.log(gameBoard.getCoordinatesOfFreeCells());
-  console.log(gameBoard.getCoordinatesOfAllShips());
+  // console.log(gameBoard.getCoordinatesOfFreeCells());
+  // console.log(gameBoard.getCoordinatesOfAllShips());
 
   const freeCells = [];
 
-  console.log(gameBoard.board);
-  console.log(gameBoard.ships);
+  // console.log(gameBoard.board);
+  // console.log(gameBoard.ships);
   let gridTemplateAreas = "";
 
   for (let i = 0; i < gridCells.length; ++i) {
@@ -126,8 +126,8 @@ const createGridAreas = (gameBoard) => {
     gridTemplateAreas += gridTemplateArea;
   }
 
-  console.log(gridTemplateAreas);
-  console.log(freeCells);
+  // console.log(gridTemplateAreas);
+  // console.log(freeCells);
   return [gridTemplateAreas, freeCells];
 };
 

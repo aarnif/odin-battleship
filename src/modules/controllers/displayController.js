@@ -89,8 +89,8 @@ class DisplayController {
       coordinates
     );
     this.playerGameBoard.changeShipPlacement(shipName, coordinates, direction);
-    console.log(this.playerGameBoard.board);
-    console.log(this.playerGameBoard.ships);
+    // console.log(this.playerGameBoard.board);
+    // console.log(this.playerGameBoard.ships);
     this.emptyDisplay(this.player.name);
     this.addPlayerGameBoardToDom();
     this.updateDisplay(this.player.name, this.playerGameBoard);
