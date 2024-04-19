@@ -17,6 +17,42 @@ class DisplayController {
     );
   }
 
+  gameStartInstructions() {
+    console.log("Displaying game instructions");
+    const gameMessage = document.getElementById("game-message");
+
+    const gameInstructionsArray = [
+      "Move ships by dragging them",
+      "Click ship to change direction",
+      "Click 'Start Game' to begin",
+    ];
+
+    gameInstructionsArray.forEach((sentence) => {
+      const sentenceElement = document.createElement("p");
+      sentenceElement.className = "mb-2";
+      sentenceElement.textContent = sentence;
+      gameMessage.appendChild(sentenceElement);
+    });
+  }
+
+  gamePlayInstructions() {
+    console.log("Displaying game play instructions");
+    const gameMessage = document.getElementById("game-message");
+
+    const gameInstructionsArray = [
+      "Click on the AI game board to play",
+      "If you hit a ship, the cell will turn green",
+      "If you miss, the cell will turn red",
+    ];
+
+    gameInstructionsArray.forEach((sentence) => {
+      const sentenceElement = document.createElement("p");
+      sentenceElement.className = "mb-2";
+      sentenceElement.textContent = sentence;
+      gameMessage.appendChild(sentenceElement);
+    });
+  }
+
   gameRoundMessages(messageOne, messageTwo) {
     console.log("Displaying game message");
     const aiGameBoardContainer = document.getElementById(
@@ -29,8 +65,12 @@ class DisplayController {
     setTimeout(() => {
       gameMessage.textContent = messageTwo;
       this.updateDisplay(this.player.name, this.playerGameBoard);
+    }, 1500);
+    setTimeout(() => {
+      this.emptyGameMessage();
+      this.gamePlayInstructions();
       aiGameBoardContainer.classList.remove("pointer-events-none");
-    }, 0);
+    }, 3000);
   }
 
   gameOverMessage(winner) {
@@ -42,6 +82,7 @@ class DisplayController {
   emptyGameMessage() {
     console.log("Emptying game message");
     const gameMessage = document.getElementById("game-message");
+    gameMessage.innerHTML = "";
     gameMessage.textContent = "";
   }
 
@@ -210,6 +251,8 @@ class DisplayController {
   startNewGame() {
     console.log("Starting a new game");
 
+    this.emptyGameMessage();
+    this.gamePlayInstructions();
     this.addAIGameBoardToDom();
 
     const startGameButton = document.getElementById("start-game");
@@ -254,7 +297,7 @@ class DisplayController {
 
     content.innerHTML = "";
     this.addPlayerGameBoardToDom();
-    this.emptyGameMessage();
+    this.gameStartInstructions();
 
     const startGameButton = document.getElementById("start-game");
     const closeModalButton = document.getElementById("close-modal");
