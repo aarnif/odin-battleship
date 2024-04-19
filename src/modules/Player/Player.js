@@ -6,6 +6,13 @@ class Player {
     const [x, y] = coordinates;
     if (gameBoard.board[x][y] === "hit" || gameBoard.board[x][y] === "miss") {
       return false;
+    } else if (
+      x < 0 ||
+      x >= gameBoard.board.length ||
+      y < 0 ||
+      y >= gameBoard.board.length
+    ) {
+      return false;
     }
     return true;
   }

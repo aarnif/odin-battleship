@@ -54,7 +54,7 @@ const createShipContainer = (playerName, shipType) => {
     shipContainer.classList.add("group");
   } else {
     // Display AI ships during development
-    shipContainer.classList.add("bg-slate-400");
+    // shipContainer.classList.add("bg-slate-400");
   }
   for (let i = 0; i < shipType.length; ++i) {
     const shipCell = document.createElement("div");

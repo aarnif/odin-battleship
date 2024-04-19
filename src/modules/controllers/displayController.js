@@ -120,9 +120,9 @@ class DisplayController {
     }
   }
 
-  updateDisplay(player, gameBoard) {
-    console.log(`Updating the game board for ${player}`);
-    const gameBoardCells = document.querySelectorAll(`#${player}-cell`);
+  updateDisplay(playerName, gameBoard) {
+    console.log(`Updating the game board for ${playerName}`);
+    const gameBoardCells = document.querySelectorAll(`#${playerName}-cell`);
     const board = gameBoard.board;
     const shipNames = this.shipNames;
     gameBoardCells.forEach((cell) => {
@@ -131,7 +131,8 @@ class DisplayController {
 
       if (x === undefined || y === undefined) return;
 
-      if (shipNames.includes(board[x][y])) {
+      if (shipNames.includes(board[x][y]) && playerName !== "AI") {
+        console.log("An AI ship was exposed");
         cell.classList.add("bg-slate-400");
       } else if (board[x][y] === "hit") {
         cell.classList.remove("bg-slate-400");
