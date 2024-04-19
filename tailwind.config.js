@@ -16,11 +16,16 @@ module.exports = {
           "0%": { opacity: 1 },
           "100%": { opacity: 0 },
         },
+        scaleIn: {
+          "0%": { transform: "scale(0)" },
+          "100%": { transform: "scale(1)" },
+        },
       },
       animation: {
         "rotate-and-scale": "rotateAndScale 500ms ease-in-out forwards",
         "fade-in-from-left": "fadeInFromLeft 1000ms ease-in-out forwards",
         "fade-out": "fadeOut 1000ms ease-in-out forwards",
+        "scale-in": "scaleIn 300ms ease-in-out forwards",
       },
     },
   },

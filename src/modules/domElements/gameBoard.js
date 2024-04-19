@@ -164,7 +164,7 @@ const createGameBoard = (playerName, playerGameBoard) => {
 
   const board = document.createElement("div");
   board.id = `${playerName}-game-board`;
-  board.className = "board-bg";
+  board.className = "board-theme";
 
   board.appendChild(createHorizontalCoordinateRow());
 

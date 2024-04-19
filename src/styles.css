@@ -6,26 +6,20 @@
   .transition-effect {
     @apply transition-all duration-300 ease-in-out;
   }
-  .body-bg {
-    @apply bg-slate-300;
+  .body-theme {
+    @apply bg-slate-300 text-slate-700;
   }
-  .body-text-color {
-    @apply text-slate-700;
+  .header-theme {
+    @apply bg-slate-500 text-slate-100;
   }
-  .header-bg {
-    @apply bg-slate-500;
-  }
-  .header-text-color {
-    @apply text-slate-100;
-  }
-  .board-bg {
+  .board-theme {
     @apply bg-slate-100;
   }
-  .footer-bg {
-    @apply bg-slate-500;
+  .footer-theme {
+    @apply bg-slate-500 text-slate-100;
   }
-  .footer-text-color {
-    @apply text-slate-100;
+  .modal-theme {
+    @apply bg-slate-300 text-slate-700 font-bold;
   }
   .button {
     @apply bg-slate-500 text-white text-2xl font-bold m-8 p-4 border-2 border-slate-500 rounded-lg shadow-lg
@@ -39,5 +33,8 @@
   }
   .ai-cell {
     @apply cursor-pointer hover:bg-slate-300;
+  }
+  dialog::backdrop {
+    @apply bg-black bg-opacity-70;
   }
 }
