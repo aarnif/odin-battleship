@@ -1,5 +1,6 @@
 import GameController from "./gameController.js";
 import addGameBoard from "../domElements/gameBoard.js";
+import { gridCells } from "../data.js";
 
 const content = document.getElementById("content");
 const gameOverModal = document.getElementById("game-over-modal");
@@ -16,19 +17,104 @@ class DisplayController {
     );
   }
 
+  gameStartInstructions() {
+    console.log("Displaying game instructions");
+    const gameMessage = document.getElementById("game-message");
+
+    const gameInstructionsArray = [
+      "Move ships by dragging them",
+      "Click ship to change direction",
+      "Click 'Start Game' to begin",
+    ];
+
+    gameInstructionsArray.forEach((sentence) => {
+      const sentenceElement = document.createElement("p");
+      sentenceElement.className = "mb-2";
+      sentenceElement.textContent = sentence;
+      gameMessage.appendChild(sentenceElement);
+    });
+  }
+
+  gamePlayInstructions() {
+    console.log("Displaying game play instructions");
+    const gameMessage = document.getElementById("game-message");
+
+    const gameInstructionsArray = [
+      "Click on the AI game board to play",
+      "If you hit a ship, the cell will turn green",
+      "If you miss, the cell will turn red",
+    ];
+
+    gameInstructionsArray.forEach((sentence) => {
+      const sentenceElement = document.createElement("p");
+      sentenceElement.className = "mb-2";
+      sentenceElement.textContent = sentence;
+      gameMessage.appendChild(sentenceElement);
+    });
+  }
+
+  gameRoundMessages(messageOne, messageTwo) {
+    console.log("Displaying game message");
+    const aiGameBoardContainer = document.getElementById(
+      `${this.ai.name}-game-board-container`
+    );
+    const gameMessage = document.getElementById("game-message");
+    gameMessage.textContent = messageOne;
+    aiGameBoardContainer.classList.add("pointer-events-none");
+    this.updateDisplay(this.ai.name, this.aiGameBoard);
+    setTimeout(() => {
+      gameMessage.textContent = messageTwo;
+      this.updateDisplay(this.player.name, this.playerGameBoard);
+    }, 1500);
+    setTimeout(() => {
+      this.emptyGameMessage();
+      this.gamePlayInstructions();
+      aiGameBoardContainer.classList.remove("pointer-events-none");
+    }, 3000);
+  }
+
+  gameOverMessage(winner) {
+    console.log("Displaying game over message");
+    const gameOverMessage = document.getElementById("game-message");
+    gameOverMessage.textContent = `${winner} wins!`;
+  }
+
+  emptyGameMessage() {
+    console.log("Emptying game message");
+    const gameMessage = document.getElementById("game-message");
+    gameMessage.innerHTML = "";
+    gameMessage.textContent = "";
+  }
+
   handlePlayRound(e) {
     console.log("Handling the play round");
-    const coordinates = [e.target.dataset.x, e.target.dataset.y];
-
+    const coordinates = [
+      Number(e.target.dataset.x),
+      Number(e.target.dataset.y),
+    ];
     const winner = this.game.playRound(coordinates);
+    const hitCell = document.querySelector(
+      `#${this.ai.name}-cell[data-x="${coordinates[0]}"][data-y="${coordinates[1]}"]`
+    );
+
+    hitCell.classList.add("pointer-events-none");
+
+    const playerCoordinatesInGrid = gridCells[coordinates[1]][coordinates[0]];
+    const aiCoordinatesInGrid =
+      gridCells[this.playerGameBoard.latestHit[1]][
+        this.playerGameBoard.latestHit[0]
+      ];
 
     this.updateDisplay(this.ai.name, this.aiGameBoard);
 
     if (winner === "Player") {
-      console.log("Player wins!");
-      this.displayGameOver(winner);
+      this.gameOverMessage(winner);
+      this.displayGameOverModal(winner);
     } else {
-      this.updateDisplay(this.player.name, this.playerGameBoard);
+      this.gameRoundMessages(
+        `Player hits game board at ${playerCoordinatesInGrid}`,
+        `Ai hits game board at ${aiCoordinatesInGrid}`
+      );
     }
   }
 
@@ -64,7 +150,7 @@ class DisplayController {
     });
   }
 
-  displayGameOver(winner) {
+  displayGameOverModal(winner) {
     console.log("Displaying the game over screen");
     const gameOverMessage = document.getElementById("game-over-message");
     gameOverMessage.textContent = `${winner} wins!`;
@@ -145,9 +231,9 @@ class DisplayController {
     this.updateDisplay(this.player.name, this.playerGameBoard);
     this.handleActiveDragShips();
     this.handleActiveChangeShipDirection();
-    const placeShipsButton = document.getElementById("place-ships");
-    placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
-    placeShipsButton.classList.remove("invisible");
+    // const placeShipsButton = document.getElementById("place-ships");
+    // placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
+    // placeShipsButton.classList.remove("invisible");
   }
 
   addAIGameBoardToDom() {
@@ -164,6 +250,9 @@ class DisplayController {
 
   startNewGame() {
     console.log("Starting a new game");
+
+    this.emptyGameMessage();
+    this.gamePlayInstructions();
     this.addAIGameBoardToDom();
 
     const startGameButton = document.getElementById("start-game");
@@ -174,11 +263,17 @@ class DisplayController {
     );
     const playersShips = document.querySelectorAll('[data-ship="ship"]');
 
-    startGameButton.classList.add("invisible");
-    placeShipsButton.classList.add("invisible");
+    startGameButton.classList.add("animate-fade-out");
+    // startGameButton.classList.add("invisible");
+    // placeShipsButton.classList.add("invisible");
 
     aiGameBoardCells.forEach((cell) => {
       cell.addEventListener("click", (e) => this.handleCellClick(cell, e));
+      cell.classList.add("ai-cell");
+    });
+
+    playerGameBoardCells.forEach((cell) => {
+      cell.replaceWith(cell.cloneNode(true));
     });
 
     playerGameBoardCells.forEach((cell) => {
@@ -206,6 +301,7 @@ class DisplayController {
 
     content.innerHTML = "";
     this.addPlayerGameBoardToDom();
+    this.gameStartInstructions();
 
     const startGameButton = document.getElementById("start-game");
     const closeModalButton = document.getElementById("close-modal");
@@ -217,7 +313,8 @@ class DisplayController {
       this.startNewGame();
     });
 
-    startGameButton.classList.remove("invisible");
+    startGameButton.classList.remove("animate-fade-out");
+    startGameButton.style.opacity = 1;
 
     closeModalButton.addEventListener("click", () => {
       gameOverModal.close();

@@ -3,7 +3,38 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply m-0 box-border;
+  .transition-effect {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  .body-theme {
+    @apply bg-slate-300 text-slate-700;
+  }
+  .header-theme {
+    @apply bg-slate-500 text-slate-100;
+  }
+  .board-theme {
+    @apply bg-slate-100;
+  }
+  .footer-theme {
+    @apply bg-slate-500 text-slate-100;
+  }
+  .modal-theme {
+    @apply bg-slate-300 text-slate-700 font-bold;
+  }
+  .button {
+    @apply bg-slate-500 text-white text-2xl font-bold m-8 p-4 border-2 border-slate-500 rounded-lg shadow-lg
+    hover:border-slate-600 hover:text-slate-600 active:scale-95 transition-effect;
+  }
+  .cell {
+    @apply w-10 h-10 flex justify-center items-center border border-black text-xl font-bold transition-effect;
+  }
+  .ship-cell {
+    @apply flex-grow border border-black cursor-pointer group-hover:bg-slate-300;
+  }
+  .ai-cell {
+    @apply cursor-pointer hover:bg-slate-300;
+  }
+  dialog::backdrop {
+    @apply bg-black bg-opacity-70;
   }
 }
