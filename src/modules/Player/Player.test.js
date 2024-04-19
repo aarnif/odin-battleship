@@ -5,10 +5,14 @@ describe("Test Player-class", () => {
   let gameBoard;
   beforeEach(() => {
     gameBoard = new GameBoard(10);
-    gameBoard.placeShip("Destroyer", [
-      [1, 1],
-      [1, 2],
-    ]);
+    gameBoard.placeShip(
+      "Destroyer",
+      [
+        [1, 1],
+        [1, 2],
+      ],
+      "vertical"
+    );
   });
   test("Player has a name", () => {
     const player = new Player("John");
