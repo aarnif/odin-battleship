@@ -107,7 +107,6 @@ class GameBoard {
               (coordinate) => coordinate[0] === x + 1 && coordinate[1] === y - 1
             )
           ) {
-            // console.log("isNextTo", x, y, cell);
             isNextTo = true;
           }
         }
@@ -135,24 +134,20 @@ class GameBoard {
     return true;
   }
   checkIfRandomShipCoordinatesAreValid(coordinates) {
-    console.log(coordinates);
     if (!this.checkIfShipCoordinatesAreInBounds(coordinates)) {
-      console.log("Coordinates out of bounds");
       return false;
     }
     if (!this.checkIfShipCellTaken(coordinates)) {
-      console.log("Cell taken");
       return false;
     }
 
     if (this.checkIfShipIsWithinOneCellFromAnotherShip(coordinates)) {
-      console.log("Next to another ship");
       return false;
     }
     return true;
   }
   createRandomShipCoordinates(startingCoordinates, shipLength, shipDirection) {
-    console.log("Creating ship coordinates");
+    console.log("Creating random ship coordinates");
     const coordinates = [];
 
     if (shipDirection === "vertical") {
@@ -172,7 +167,6 @@ class GameBoard {
       }
     }
     if (!this.checkIfRandomShipCoordinatesAreValid(coordinates)) {
-      console.log("Ship coordinates are not valid");
       return false;
     }
     return coordinates;
@@ -214,15 +208,14 @@ class GameBoard {
     return coordinates;
   }
   placeShip(name, coordinates, direction) {
+    console.log(`Placing ship ${name}`);
     let newShip = new Ship(name, coordinates.length, direction, coordinates);
-    // console.log(coordinates[0], newShip.length, newShip.direction);
 
     const shipCoordinates = this.createRandomShipCoordinates(
       coordinates[0],
       newShip.length,
       newShip.direction
     );
-    console.log(shipCoordinates);
 
     if (!shipCoordinates) {
       return false;
@@ -230,7 +223,7 @@ class GameBoard {
 
     this.mark(shipCoordinates, name);
     newShip = new Ship(name, coordinates.length, direction, shipCoordinates);
-    console.log("NEw ship", newShip);
+    console.log("New ship", newShip);
     this.ships.push(newShip);
     return true;
   }
@@ -269,42 +262,25 @@ class GameBoard {
   }
   changeShipPlacement(name, coordinates, direction) {
     console.log("Changing ship placement");
-    // console.log("Old ship positions", this.ships);
     const ship = this.ships.find((ship) => ship.name === name);
-    // console.log(
-    //   "Old ship coordinates",
-    //   ship.coordinates[0],
-    //   ship.coordinates[1]
-    // );
-    // console.log(ship);
+
     const newCoordinates = this.createShipCoordinates(
       coordinates,
       ship.length,
       direction
     );
-    // console.log(newCoordinates);
-    // console.log("Old game board");
-    // console.log(this.board);
 
     if (!newCoordinates) {
       return false;
     }
 
-    // this.emptyGameBoard();
-    // console.log("Empty game board");
-    // console.log(this.board);
     ship.coordinates = newCoordinates;
     console.log(
       "New ship coordinates",
       ship.coordinates[0],
       ship.coordinates[1]
     );
-    // console.log(ship);
-    // console.log("New ship positions", this.ships);
-    // this.placeAllShips();
     this.updateShipPositions();
-    // console.log("New game board");
-    // console.log(this.board);
     return true;
   }
   removeShipFromBoard(name) {
@@ -335,19 +311,16 @@ class GameBoard {
       ship.length,
       newDirection
     );
-    console.log("Old ship coordinates", ship.coordinates);
+
     if (!shipCoordinates) {
+      this.addShipToBoard(ship.name, ship.coordinates, ship.direction);
       return false;
     } else {
       ship.direction = newDirection;
       ship.coordinates = shipCoordinates;
     }
-    console.log("New ship coordinates", ship.coordinates);
 
     this.addShipToBoard(ship.name, ship.coordinates, newDirection);
-
-    console.log(this.ships);
-    console.log(this.board);
 
     this.updateShipPositions();
   }

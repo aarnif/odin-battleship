@@ -4,6 +4,7 @@ import { gridCells } from "../data.js";
 
 const content = document.getElementById("content");
 const gameOverModal = document.getElementById("game-over-modal");
+const gameRoundDuration = 1500;
 
 class DisplayController {
   constructor() {
@@ -17,21 +18,25 @@ class DisplayController {
     );
   }
 
+  createParagraph(text) {
+    const paragraph = document.createElement("p");
+    paragraph.className = "mt-6";
+    paragraph.textContent = text;
+    return paragraph;
+  }
+
   gameStartInstructions() {
     console.log("Displaying game instructions");
     const gameMessage = document.getElementById("game-message");
 
-    const gameInstructionsArray = [
+    const gameStartInstructionsArray = [
       "Move ships by dragging them",
       "Click ship to change direction",
       "Click 'Start Game' to begin",
     ];
 
-    gameInstructionsArray.forEach((sentence) => {
-      const sentenceElement = document.createElement("p");
-      sentenceElement.className = "mb-2";
-      sentenceElement.textContent = sentence;
-      gameMessage.appendChild(sentenceElement);
+    gameStartInstructionsArray.forEach((sentence) => {
+      gameMessage.appendChild(this.createParagraph(sentence));
     });
   }
 
@@ -39,17 +44,14 @@ class DisplayController {
     console.log("Displaying game play instructions");
     const gameMessage = document.getElementById("game-message");
 
-    const gameInstructionsArray = [
+    const gamePlayInstructionsArray = [
       "Click on the AI game board to play",
       "If you hit a ship, the cell will turn green",
       "If you miss, the cell will turn red",
     ];
 
-    gameInstructionsArray.forEach((sentence) => {
-      const sentenceElement = document.createElement("p");
-      sentenceElement.className = "mb-2";
-      sentenceElement.textContent = sentence;
-      gameMessage.appendChild(sentenceElement);
+    gamePlayInstructionsArray.forEach((sentence) => {
+      gameMessage.appendChild(this.createParagraph(sentence));
     });
   }
 
@@ -65,12 +67,12 @@ class DisplayController {
     setTimeout(() => {
       gameMessage.textContent = messageTwo;
       this.updateDisplay(this.player.name, this.playerGameBoard);
-    }, 1500);
+    }, gameRoundDuration);
     setTimeout(() => {
       this.emptyGameMessage();
       this.gamePlayInstructions();
       aiGameBoardContainer.classList.remove("pointer-events-none");
-    }, 3000);
+    }, gameRoundDuration * 2);
   }
 
   gameOverMessage(winner) {
@@ -175,8 +177,6 @@ class DisplayController {
       coordinates
     );
     this.playerGameBoard.changeShipPlacement(shipName, coordinates, direction);
-    // console.log(this.playerGameBoard.board);
-    // console.log(this.playerGameBoard.ships);
     this.addPlayerGameBoardToDom();
     this.updateDisplay(this.player.name, this.playerGameBoard);
   }
@@ -203,7 +203,7 @@ class DisplayController {
     });
 
     const playerShipElements = document.querySelectorAll('[data-ship="ship"]');
-    console.log(playerShipElements);
+
     playerShipElements.forEach((cell) => {
       cell.addEventListener("dragstart", (e) => {
         console.log(`Dragging ship ${e.target.id}`);
@@ -231,9 +231,6 @@ class DisplayController {
     this.updateDisplay(this.player.name, this.playerGameBoard);
     this.handleActiveDragShips();
     this.handleActiveChangeShipDirection();
-    // const placeShipsButton = document.getElementById("place-ships");
-    // placeShipsButton.addEventListener("click", () => this.handlePlaceShips());
-    // placeShipsButton.classList.remove("invisible");
   }
 
   addAIGameBoardToDom() {
@@ -264,8 +261,6 @@ class DisplayController {
     const playersShips = document.querySelectorAll('[data-ship="ship"]');
 
     startGameButton.classList.add("animate-fade-out");
-    // startGameButton.classList.add("invisible");
-    // placeShipsButton.classList.add("invisible");
 
     aiGameBoardCells.forEach((cell) => {
       cell.addEventListener("click", (e) => this.handleCellClick(cell, e));
@@ -301,6 +296,7 @@ class DisplayController {
 
     content.innerHTML = "";
     this.addPlayerGameBoardToDom();
+    this.emptyGameMessage();
     this.gameStartInstructions();
 
     const startGameButton = document.getElementById("start-game");

@@ -86,19 +86,12 @@ const createShips = (playerName, playerGameBoard) => {
     shipType.container = createShipContainer(playerName, shipType);
   });
 
-  // console.log(shipTypes);
-
   return shipTypes;
 };
 
 const createGridAreas = (gameBoard) => {
-  // console.log(gameBoard.getCoordinatesOfFreeCells());
-  // console.log(gameBoard.getCoordinatesOfAllShips());
-
   const freeCells = [];
 
-  // console.log(gameBoard.board);
-  // console.log(gameBoard.ships);
   let gridTemplateAreas = "";
 
   for (let i = 0; i < gridCells.length; ++i) {
@@ -116,8 +109,6 @@ const createGridAreas = (gameBoard) => {
     gridTemplateAreas += gridTemplateArea;
   }
 
-  // console.log(gridTemplateAreas);
-  // console.log(freeCells);
   return [gridTemplateAreas, freeCells];
 };
 
@@ -179,12 +170,6 @@ const createGameBoard = (playerName, playerGameBoard) => {
   board.appendChild(boardColumnsContainer);
   gameBoardContainer.appendChild(playerTitle);
   gameBoardContainer.appendChild(board);
-
-  // if (playerName !== "AI") {
-  //   gameBoardContainer.appendChild(createPlaceShipsButton());
-  // }
-
-  console.log("This is a test");
 
   return gameBoardContainer;
 };
