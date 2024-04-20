@@ -2,21 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Text:wght@100..900&display=swap");
+
 @layer base {
+  .background-theme {
+    @apply bg-slate-500 bg-opacity-30 text-slate-100;
+  }
   .transition-effect {
     @apply transition-all duration-300 ease-in-out;
   }
   .body-theme {
-    @apply bg-slate-300 text-slate-700;
+    @apply bg-slate-300 text-slate-100;
   }
   .header-theme {
-    @apply bg-slate-500 text-slate-100;
+    @apply background-theme;
   }
   .board-theme {
-    @apply bg-slate-100;
+    @apply background-theme;
   }
   .footer-theme {
-    @apply bg-slate-500 text-slate-100;
+    @apply background-theme;
   }
   .modal-theme {
     @apply bg-slate-300 text-slate-700 font-bold;
@@ -26,7 +31,7 @@
     hover:border-slate-600 hover:text-slate-600 active:scale-95 transition-effect;
   }
   .cell {
-    @apply w-10 h-10 flex justify-center items-center border border-black text-xl font-bold transition-effect;
+    @apply w-10 h-10 flex justify-center items-center border border-black text-xl font-bold transition-effect background-theme;
   }
   .ship-cell {
     @apply flex-grow border border-black cursor-pointer group-hover:bg-slate-300;

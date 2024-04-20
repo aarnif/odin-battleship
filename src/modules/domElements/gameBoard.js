@@ -1,20 +1,9 @@
 import { gridCells } from "../data";
 
-const createPlaceShipsButton = () => {
-  const placeShipsButtonContainer = document.createElement("div");
-  placeShipsButtonContainer.className = "flex justify-center";
-  const placeShipsButton = document.createElement("button");
-  placeShipsButton.id = `place-ships`;
-  placeShipsButton.className = "button";
-  placeShipsButton.textContent = "Place Ships Randomly";
-  placeShipsButtonContainer.appendChild(placeShipsButton);
-  return placeShipsButtonContainer;
-};
-
 const createHorizontalCoordinateRow = () => {
   const horizontalCordinates = " ABCDEFGHIJ".split("");
   const horizontalCordinateRow = document.createElement("div");
-  horizontalCordinateRow.className = "flex";
+  horizontalCordinateRow.className = "flex ";
   horizontalCordinates.forEach((cordinate) => {
     const cell = document.createElement("div");
     cell.className = "cell";
@@ -114,7 +103,7 @@ const createGridAreas = (gameBoard) => {
 
 const createGameBoardCells = (playerName, playerGameBoard) => {
   const board = document.createElement("div");
-  board.className = "grid grid-cols-10 grid-rows-10";
+  board.className = "grid grid-cols-10 grid-rows-10 background-theme";
 
   const [gridTemplateAreas, freeCells] = createGridAreas(playerGameBoard);
 
@@ -144,6 +133,7 @@ const createGameBoardCells = (playerName, playerGameBoard) => {
 const createGameBoard = (playerName, playerGameBoard) => {
   const gameBoardContainer = document.createElement("div");
   gameBoardContainer.id = `${playerName}-game-board-container`;
+  gameBoardContainer.className = "flex flex-col items-center";
 
   const playerTitle = document.createElement("h2");
   playerTitle.className = "p-2 text-center text-2xl font-bold";

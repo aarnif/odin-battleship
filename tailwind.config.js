@@ -27,6 +27,12 @@ module.exports = {
         "fade-out": "fadeOut 1000ms ease-in-out forwards",
         "scale-in": "scaleIn 300ms ease-in-out forwards",
       },
+      fontFamily: {
+        "big-shoulder-tencil": ["Big Shoulders Stencil Text", "sans-serif"],
+      },
+      backgroundImage: {
+        background: "url('assets/images/background.png')",
+      },
     },
   },
   plugins: [],
