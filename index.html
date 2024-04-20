@@ -7,12 +7,12 @@
     <title>Odin Battleship</title>
     <script src="main.js" defer></script>
   </head>
-  <body class="m-0 box-border body-theme">
+  <body class="m-0 box-border body-theme bg-background text-slate-100;">
     <div id="wrapper" class="flex flex-col items-center h-screen">
       <header
-        class="w-full flex justify-center items-center p-8 shadow-xl header-theme"
+        class="w-full flex justify-center items-center p-8 shadow-xl header-theme font-big-shoulder-tencil"
       >
-        <h1 class="text-4xl font-extrabold">Battleship</h1>
+        <h1 class="text-8xl font-extrabold">BATTLESHIP</h1>
       </header>
       <div
         id="game-info"
@@ -20,12 +20,12 @@
       >
         <div
           id="game-message"
-          class="w-full h-[100px] flex flex-col justify-center items-center text-2xl font-bold animate-fade-in"
+          class="w-full flex flex-col justify-center items-center p-4 text-2xl font-bold animate-fade-in"
         ></div>
       </div>
       <div
         id="content"
-        class="w-full flex-grow flex justify-around items-start"
+        class="w-full flex-grow max-w-[1400px] flex justify-around items-start"
       ></div>
       <div
         id="start-button-container"
@@ -34,7 +34,7 @@
         <button id="start-game" class="button">Start Game</button>
       </div>
       <footer
-        class="relative bottom-0 w-full flex justify-center items-center shadow-lg footer-theme"
+        class="relative bottom-0 w-full flex justify-center items-center shadow-lg footer-theme font-big-shoulder-tencil"
       >
         <div class="flex justify-center items-center py-2">
           <div class="pr-2 text-lg font-bold">Created By aarnif</div>
@@ -56,7 +56,7 @@
     </div>
     <dialog
       id="game-over-modal"
-      class="w-[300px] h-[240px] modal-theme rounded-xl shadow-xl animate-scale-in"
+      class="w-[300px] h-[240px] modal-theme rounded-xl shadow-xl animate-scale-in background-theme"
     >
       <div class="w-full h-full flex flex-col justify-around items-center">
         <h2 class="text-3xl text-center py-4">Game Over</h2>
