@@ -109,7 +109,7 @@ class DisplayController {
 
     this.updateDisplay(this.ai.name, this.aiGameBoard);
 
-    if (winner === "Player") {
+    if (winner === "Player" || winner === "AI") {
       this.gameOverMessage(winner);
       this.displayGameOverModal(winner);
     } else {

@@ -4,13 +4,16 @@ class Player {
   }
   checkIfMoveIsValid(gameBoard, coordinates) {
     const [x, y] = coordinates;
-    if (gameBoard.board[x][y] === "hit" || gameBoard.board[x][y] === "miss") {
-      return false;
-    } else if (
+    if (
       x < 0 ||
       x >= gameBoard.board.length ||
       y < 0 ||
       y >= gameBoard.board.length
+    ) {
+      return false;
+    } else if (
+      gameBoard.board[x][y] === "hit" ||
+      gameBoard.board[x][y] === "miss"
     ) {
       return false;
     }
